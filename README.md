@@ -6,7 +6,9 @@ The library takes in input:
  - A pandas dataframe or a NumPy array containing the data used to train the model
  - A pandas dataframe or a NumPy array containing a batch of holdout data
  - The model predictions for the training and holdout data (and the corresponding probabilities when in presence of classification problems)
- - A list of  protected attributes
+ - A list of  protected categories
+
+The protected categories list of attributes that can be misrepresented or underrepresented in our dataset, such as gender, ethnicity, age, etc. 
 
 Given  the inputs listed above,the library  creates a model cards containing a breakdown  of model performance metrics for different data slices describing protected categories.
 
@@ -26,16 +28,14 @@ A model card is generated as a json file containing the following information:
 - A list of data slices defining the model cards
 - An error matrix for each data slice
 - A model calibration curve
+- A model bias summary
 - A list of problematic data slices and a mitigation strategy
-
 
 ## Bias metrics 
 
-In general, this quantitative measuring step requires some manual work and a good degree of domain expertise.
+The model bias summary is calculated with respect to the protected categories defined by the user.
 
-First, we need to identify the protected categories that can be misrepresented or underrepresented in our dataset, such as gender, ethnicity, age, etc. Once these categories are defined and given an ML model trained using our dataset, we can measure how biased the model is w.r.t. to our protected categories.
-
-Two important fairness metrics are, for example:
+The fairness metrics used within this library are:
 
 - Equalised odds: which means measuring how much the model's predictions are conditionally dependent on the sensitive features. It corresponds to calculating TPR, and FPR across protected groups, measuring their imbalance.
 - Equal opportunity: it corresponds to measuring how much the conditional expectations for positive labels change across protected groups.
