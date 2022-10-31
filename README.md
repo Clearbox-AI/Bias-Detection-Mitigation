@@ -29,12 +29,28 @@ A model card is generated as a json file containing the following information:
 - A list of problematic data slices and a mitigation strategy
 
 
+## Bias metrics 
+
+In general, this quantitative measuring step requires some manual work and a good degree of domain expertise.
+
+First, we need to identify the protected categories that can be misrepresented or underrepresented in our dataset, such as gender, ethnicity, age, etc. Once these categories are defined and given an ML model trained using our dataset, we can measure how biased the model is w.r.t. to our protected categories.
+
+Two important fairness metrics are, for example:
+
+- Equalised odds: which means measuring how much the model's predictions are conditionally dependent on the sensitive features. It corresponds to calculating TPR, and FPR across protected groups, measuring their imbalance.
+- Equal opportunity: it corresponds to measuring how much the conditional expectations for positive labels change across protected groups.
+
+The two metrics defined above are fairly easy to measure once we have a model and a set of protected categories. 
+
 ## Example
 
 ``` python
 from bias_detection_mitigation.model_card import model_card
 
-modelcard = model_card(X_train, X_test, y_train, y_test, model_pred_train, model_pred_test)
+protected_categories = ['sex','age']
+modelcard = model_card(X_train, X_test, y_train, y_test, model_pred_train, model_pred_test, protected_categories=protected_categories)
+
+
 
 modelcard.save('card.txt')
 ```
